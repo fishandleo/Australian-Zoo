@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brisbane · Australian Zoo · Noosa 两天一夜行程</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #EDE6D3;
+    --bg-card: #F8F4E7;
+    --deep: #22321F;
+    --ink: #1E2A1C;
+    --ink-soft: #4B564A;
+    --green: #52734D;
+    --green-light: #7E9A72;
+    --blue: #3E6E8A;
+    --blue-light: #7FA6BC;
+    --red: #B23A2E;
+    --red-light: #CC7A6E;
+    --rust: #A8501E;
+    --line: #C9BE9E;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Work Sans', sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:60px;
+  }
+
+  h1,h2,h3{
+    font-family:'Fraunces', serif;
+    color:var(--deep);
+    font-weight:600;
+    line-height:1.15;
+  }
+
+  a{ color:inherit; }
+  .wrap{ max-width:860px; margin:0 auto; padding:0 28px; }
+
+  /* ---------- STICKY DAY NAV ---------- */
+  .day-nav{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:rgba(237,230,211,0.94);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid #DCD2B4;
+  }
+  .day-nav-inner{
+    max-width:860px;
+    margin:0 auto;
+    padding:0 28px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    height:58px;
+  }
+  .day-nav-title{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:0.98rem;
+    color:var(--deep);
+    margin-right:auto;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .day-nav-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:8px 16px;
+    border-radius:20px;
+    font-size:0.86rem;
+    font-weight:500;
+    background:transparent;
+    border:1px solid var(--line);
+    color:var(--ink-soft);
+    cursor:pointer;
+    font-family:'Work Sans', sans-serif;
+    white-space:nowrap;
+    transition:background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+  .day-nav-btn .dot{
+    width:7px; height:7px; border-radius:50%;
+    background:var(--red-light);
+    flex-shrink:0;
+  }
+  .day-nav-btn[data-day="2"] .dot{ background:var(--blue-light); }
+  .day-nav-btn.active{
+    background:var(--red);
+    border-color:var(--red);
+    color:#F8F4E7;
+  }
+  .day-nav-btn.active .dot{ background:#F8F4E7; }
+  .day-nav-btn[data-day="2"].active{
+    background:var(--blue);
+    border-color:var(--blue);
+  }
+
+  /* ---------- HAPPY BANNER ---------- */
+  .banner{
+    position:relative;
+    overflow:hidden;
+    background:linear-gradient(120deg, #FBE9B8 0%, #F5D89C 32%, #E3EFC8 68%, #D7E8C4 100%);
+    padding:52px 28px 46px;
+  }
+  .banner-inner{
+    max-width:860px;
+    margin:0 auto;
+    position:relative;
+    z-index:2;
+  }
+  .banner-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:#FFFFFF;
+    color:var(--rust);
+    font-weight:600;
+    font-size:0.92rem;
+    padding:7px 16px;
+    border-radius:20px;
+    box-shadow:0 2px 8px rgba(34,50,31,0.08);
+    margin-bottom:18px;
+  }
+  .banner h1{
+    font-size:clamp(2rem, 5vw, 2.8rem);
+    color:var(--deep);
+    max-width:16ch;
+  }
+  .banner p{
+    margin-top:14px;
+    color:#3E4A38;
+    max-width:56ch;
+    font-size:1rem;
+  }
+  .banner-deco{
+    position:absolute;
+    z-index:1;
+    pointer-events:none;
+  }
+  .banner-deco.sun{ top:-30px; right:20px; width:130px; opacity:0.9; }
+  .banner-deco.koala{ bottom:-14px; right:120px; width:70px; opacity:0.95; }
+  .banner-deco.leaf{ bottom:-20px; left:-10px; width:150px; opacity:0.85; }
+  .banner-deco.car{ bottom:14px; left:220px; width:56px; opacity:0.9; }
+
+  @media (max-width:640px){
+    .banner-deco.koala, .banner-deco.car{ display:none; }
+    .banner-deco.sun{ width:90px; }
+    .banner-deco.leaf{ width:110px; }
+  }
+
+  /* ---------- SECTION HEAD ---------- */
+  .section-head{ margin-bottom:32px; }
+  .section-head h2{ font-size:1.6rem; }
+  .section-head p{ color:var(--ink-soft); margin-top:8px; max-width:54ch; font-size:0.94rem; }
+
+  /* ---------- OVERVIEW MAP ---------- */
+  .overview-section{ padding:44px 0 12px; scroll-margin-top:70px; }
+  .overview-map-frame{
+    background:var(--bg-card);
+    border:1px solid #E1D8BE;
+    border-radius:6px;
+    padding:20px 16px 8px;
+  }
+  .overview-map-frame svg{ width:100%; height:auto; display:block; }
+  .map-legend{
+    display:flex; gap:28px; flex-wrap:wrap;
+    padding:14px 6px 4px; font-size:0.86rem; color:var(--ink-soft);
+  }
+  .map-legend span{ display:inline-flex; align-items:center; gap:8px; }
+  .legend-swatch{ width:22px; height:3px; border-radius:2px; display:inline-block; }
+
+  /* ---------- DAY SECTION ---------- */
+  .day-section{ padding:48px 0 12px; scroll-margin-top:70px; }
+
+  .day-header{
+    display:flex; align-items:flex-start; justify-content:space-between;
+    gap:20px; flex-wrap:wrap; margin-bottom:32px;
+  }
+  .day-header-text .day-tag{
+    font-size:0.82rem; color:var(--green); background:rgba(82,115,77,0.12);
+    padding:3px 10px; border-radius:3px; display:inline-block; margin-bottom:10px;
+  }
+  .day-section.day1 .day-header-text .day-tag{ color:var(--red); background:rgba(178,58,46,0.12); }
+  .day-section.day2 .day-header-text .day-tag{ color:var(--blue); background:rgba(62,110,138,0.12); }
+  .day-header-text h2{ font-size:1.6rem; }
+  .day-header-text p{ color:var(--ink-soft); margin-top:6px; max-width:48ch; font-size:0.94rem; }
+
+  .btn{
+    display:inline-flex; align-items:center; gap:8px; padding:11px 18px;
+    border-radius:4px; font-size:0.88rem; font-weight:500; cursor:pointer;
+    border:1px solid transparent; background:none; font-family:'Work Sans', sans-serif;
+    transition:transform 0.15s ease, background 0.15s ease; flex-shrink:0;
+  }
+  .btn svg{ width:16px; height:16px; stroke:currentColor; fill:none; flex-shrink:0; }
+  .btn:active{ transform:scale(0.97); }
+  .btn-primary{ background:var(--green); color:#F8F4E7; }
+  .btn-primary:hover{ background:#456140; }
+  .day-section.day1 .btn-primary{ background:var(--red); }
+  .day-section.day1 .btn-primary:hover{ background:#8E2E24; }
+  .day-section.day2 .btn-primary{ background:var(--blue); }
+  .day-section.day2 .btn-primary:hover{ background:#325972; }
+
+  /* ---------- TIMELINE ---------- */
+  .timeline{ position:relative; padding-left:52px; margin-top:8px; }
+  .timeline::before{
+    content:"";
+    position:absolute; left:19px; top:10px; bottom:10px; width:2px;
+    background:repeating-linear-gradient(to bottom, var(--line) 0px, var(--line) 6px, transparent 6px, transparent 12px);
+  }
+  .stop{ position:relative; padding-bottom:8px; }
+  .stop-marker{
+    position:absolute; left:-52px; top:2px; width:40px; height:40px;
+    border-radius:50%; background:var(--bg-card); border:2px solid var(--green);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .day-section.day1 .stop-marker{ border-color:var(--red); }
+  .day-section.day2 .stop-marker{ border-color:var(--blue); }
+  .stop-marker svg{ width:20px; height:20px; stroke:var(--green); fill:none; }
+  .day-section.day1 .stop-marker svg{ stroke:var(--red); }
+  .day-section.day2 .stop-marker svg{ stroke:var(--blue); }
+
+  /* simple (non-collapsible) stop: start/hotel/return */
+  .stop-simple{
+    background:var(--bg-card);
+    border:1px solid #E1D8BE;
+    border-radius:4px;
+    padding:18px 26px;
+    margin-bottom:6px;
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+  .stop-simple .stop-tag{
+    font-size:0.78rem; color:var(--green); background:rgba(82,115,77,0.12);
+    padding:3px 10px; border-radius:3px;
+  }
+  .day-section.day1 .stop-simple .stop-tag{ color:var(--red); background:rgba(178,58,46,0.12); }
+  .day-section.day2 .stop-simple .stop-tag{ color:var(--blue); background:rgba(62,110,138,0.12); }
+  .stop-simple h3{ font-size:1.15rem; }
+  .stop-simple .stop-addr{ color:var(--ink-soft); font-size:0.92rem; }
+
+  /* collapsible stop card */
+  .stop-card{
+    background:var(--bg-card);
+    border:1px solid #E1D8BE;
+    border-radius:4px;
+    margin-bottom:6px;
+    overflow:hidden;
+  }
+  .stop-card summary{
+    list-style:none;
+    cursor:pointer;
+    padding:22px 26px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+  }
+  .stop-card summary::-webkit-details-marker{ display:none; }
+  .stop-card summary:hover{ background:rgba(82,115,77,0.06); }
+  .day-section.day1 .stop-card summary:hover{ background:rgba(178,58,46,0.06); }
+  .day-section.day2 .stop-card summary:hover{ background:rgba(62,110,138,0.06); }
+
+  .stop-card-head-text .stop-tag{
+    display:inline-block; font-size:0.78rem; color:var(--green);
+    background:rgba(82,115,77,0.12); padding:3px 10px; border-radius:3px; margin-bottom:10px;
+  }
+  .day-section.day1 .stop-card-head-text .stop-tag{ color:var(--red); background:rgba(178,58,46,0.12); }
+  .day-section.day2 .stop-card-head-text .stop-tag{ color:var(--blue); background:rgba(62,110,138,0.12); }
+  .stop-card-head-text h3{ font-size:1.32rem; margin-bottom:4px; }
+  .stop-card-head-text .stop-addr{ color:var(--ink-soft); font-size:0.93rem; }
+
+  .stop-card .chev{
+    width:18px; height:18px; stroke:var(--ink-soft); fill:none;
+    transition:transform 0.2s ease; flex-shrink:0;
+  }
+  .stop-card[open] .chev{ transform:rotate(180deg); }
+
+  .stop-card-body{
+    padding:0 26px 26px;
+    border-top:1px dashed var(--line);
+    margin-top:-2px;
+    padding-top:18px;
+  }
+  .stop-desc{ color:var(--ink-soft); font-size:0.96rem; max-width:58ch; }
+  .stop-meta{ display:flex; gap:26px; margin-top:16px; flex-wrap:wrap; }
+  .stop-meta div{ font-size:0.85rem; color:var(--ink-soft); }
+  .stop-meta strong{
+    color:var(--deep); display:block; font-size:0.97rem;
+    font-family:'Fraunces', serif; font-weight:600;
+  }
+
+  /* google maps chip link */
+  .maps-link{
+    margin-top:18px;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:9px 15px;
+    border-radius:20px;
+    background:rgba(82,115,77,0.1);
+    color:var(--green);
+    font-size:0.85rem;
+    font-weight:500;
+    text-decoration:none;
+  }
+  .day-section.day2 .maps-link{ background:rgba(62,110,138,0.1); color:var(--blue); }
+  .maps-link:hover{ background:rgba(82,115,77,0.18); }
+  .day-section.day2 .maps-link:hover{ background:rgba(62,110,138,0.18); }
+  .maps-link svg{ width:16px; height:16px; stroke:currentColor; fill:none; }
+
+  /* official link */
+  .official-link{
+    margin-top:14px;
+    display:block;
+    font-size:0.85rem;
+    color:var(--rust);
+    font-weight:500;
+    text-decoration:underline;
+    text-underline-offset:3px;
+  }
+
+  /* show times: single column */
+  .show-times{ margin-top:18px; border-top:1px dashed var(--line); padding-top:16px; }
+  .show-times-label{ font-size:0.82rem; color:var(--ink-soft); margin-bottom:10px; }
+  .show-list{ display:flex; flex-direction:column; }
+  .show-row{
+    display:flex; justify-content:space-between; gap:16px;
+    font-size:0.9rem; padding:8px 0; border-bottom:1px solid #EAE2C9;
+  }
+  .show-row.featured{ font-weight:600; color:var(--rust); }
+  .show-time{ color:var(--ink-soft); white-space:nowrap; }
+  .show-row.featured .show-time{ color:var(--rust); }
+  .show-note{
+    margin-top:10px;
+    font-size:0.82rem;
+    color:var(--ink-soft);
+    font-style:italic;
+  }
+
+  /* connector segment */
+  .segment{
+    position:relative; padding:20px 0 20px 6px;
+    display:flex; align-items:center; gap:10px;
+    color:var(--ink-soft); font-size:0.9rem;
+  }
+  .segment svg{ width:16px; height:16px; stroke:var(--rust); fill:none; flex-shrink:0; }
+  .segment b{ color:var(--rust); font-weight:600; }
+
+  @media (max-width:640px){
+    .banner{ padding:40px 22px 34px; }
+    .timeline{ padding-left:44px; }
+    .stop-marker{ left:-44px; width:34px; height:34px; }
+    .day-header{ flex-direction:column; }
+    .day-nav-title{ display:none; }
+    .day-header .btn{ width:100%; justify-content:center; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- STICKY DAY NAV -->
+  <nav class="day-nav">
+    <div class="day-nav-inner">
+      <span class="day-nav-title">Brisbane · Zoo · Noosa</span>
+      <button class="day-nav-btn" data-day="1" onclick="scrollToDay(1)">
+        <span class="dot"></span>D1 9-21
+      </button>
+      <button class="day-nav-btn" data-day="2" onclick="scrollToDay(2)">
+        <span class="dot"></span>D2 9-22
+      </button>
+    </div>
+  </nav>
+
+  <!-- HAPPY BANNER -->
+  <section class="banner">
+    <div class="banner-inner">
+      <span class="banner-badge">🎉 Happy Family Trip</span>
+      <h1>市区、动物园、Noosa 海岸线的往返路线</h1>
+      <p>第一天从布里斯班市区出发前往 Australian Zoo，入住 Twin Waters 的 Novotel；第二天走进 Noosa National Park，尝一口手工巧克力，再驾车返回市区。一起期待这趟满满笑声的家庭小旅行吧！</p>
+    </div>
+
+    <svg class="banner-deco sun" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="60" cy="60" r="26" fill="#F2A93C"/>
+      <g stroke="#F2A93C" stroke-width="5" stroke-linecap="round">
+        <line x1="60" y1="4" x2="60" y2="20"/>
+        <line x1="60" y1="100" x2="60" y2="116"/>
+        <line x1="4" y1="60" x2="20" y2="60"/>
+        <line x1="100" y1="60" x2="116" y2="60"/>
+        <line x1="19" y1="19" x2="30" y2="30"/>
+        <line x1="90" y1="90" x2="101" y2="101"/>
+        <line x1="101" y1="19" x2="90" y2="30"/>
+        <line x1="30" y1="90" x2="19" y2="101"/>
+      </g>
+    </svg>
+
+    <svg class="banner-deco koala" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="20" cy="18" r="13" fill="#8C9A8A"/>
+      <circle cx="70" cy="18" r="13" fill="#8C9A8A"/>
+      <circle cx="45" cy="46" r="34" fill="#A9B6A5"/>
+      <ellipse cx="45" cy="54" rx="16" ry="13" fill="#F3EEDF"/>
+      <circle cx="33" cy="38" r="4" fill="#22321F"/>
+      <circle cx="57" cy="38" r="4" fill="#22321F"/>
+      <ellipse cx="45" cy="50" rx="6" ry="4.5" fill="#22321F"/>
+    </svg>
+
+    <svg class="banner-deco car" viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg">
+      <rect x="8" y="26" width="80" height="20" rx="6" fill="#B23A2E"/>
+      <path d="M22 26 L34 10 H66 L78 26 Z" fill="#B23A2E"/>
+      <path d="M36 26 L45 14 H60 L69 26 Z" fill="#EAF2F6"/>
+      <circle cx="28" cy="48" r="9" fill="#22321F"/>
+      <circle cx="72" cy="48" r="9" fill="#22321F"/>
+      <circle cx="28" cy="48" r="3.5" fill="#F8F4E7"/>
+      <circle cx="72" cy="48" r="3.5" fill="#F8F4E7"/>
+    </svg>
+
+    <svg class="banner-deco leaf" viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 140 C 10 80, 40 30, 100 10 C 90 60, 70 100, 10 140 Z" fill="#7E9A72" opacity="0.55"/>
+      <path d="M50 140 C 55 90, 80 50, 130 25 C 120 70, 100 110, 50 140 Z" fill="#52734D" opacity="0.5"/>
+    </svg>
+  </section>
+
+  <!-- OVERVIEW MAP -->
+  <section class="overview-section" id="overview">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>行程总览</h2>
+        <p>手绘示意图，非精确比例 —— 绿色是第一天路线，蓝色是第二天路线，深色实心点标注当晚住宿地点。</p>
+      </div>
+      <div class="overview-map-frame">
+        <svg viewBox="0 0 780 460" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <filter id="sketchy" x="-20%" y="-20%" width="140%" height="140%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.012 0.02" numOctaves="2" seed="7" result="noise"/>
+              <feDisplacementMap in="SourceGraphic" in2="noise" scale="7"/>
+            </filter>
+          </defs>
+
+          <path d="M 110 400 C 160 340, 190 300, 255 265 C 300 240, 350 210, 425 155"
+                fill="none" stroke="#B23A2E" stroke-width="4" stroke-linecap="round" filter="url(#sketchy)"/>
+
+          <path d="M 425 155 C 465 115, 490 95, 515 70 C 495 55, 470 48, 445 55 C 380 90, 260 190, 110 400"
+                fill="none" stroke="#3E6E8A" stroke-width="4" stroke-linecap="round"
+                stroke-dasharray="1 14" filter="url(#sketchy)"/>
+
+          <circle cx="110" cy="400" r="9" fill="#F8F4E7" stroke="#22321F" stroke-width="2.5"/>
+          <text x="128" y="404" font-family="Fraunces, serif" font-size="15" fill="#22321F" font-weight="600">Brisbane · 出发/返回</text>
+          <text x="128" y="422" font-family="Work Sans, sans-serif" font-size="11.5" fill="#4B564A">128 Charlotte St</text>
+
+          <circle cx="255" cy="265" r="9" fill="#F8F4E7" stroke="#B23A2E" stroke-width="2.5"/>
+          <text x="192" y="252" font-family="Fraunces, serif" font-size="15" fill="#22321F" font-weight="600">Australian Zoo</text>
+          <text x="203" y="290" font-family="Work Sans, sans-serif" font-size="11.5" fill="#4B564A">Beerwah</text>
+
+          <circle cx="425" cy="155" r="11" fill="#22321F" stroke="#22321F" stroke-width="2"/>
+          <path d="M418 151 h14 M419 151 v-4 h5 v4 M419 158 h12" stroke="#F8F4E7" stroke-width="1.6" fill="none" stroke-linecap="round" transform="translate(0,-1)"/>
+          <text x="440" y="150" font-family="Fraunces, serif" font-size="15" fill="#22321F" font-weight="600">Novotel Sunshine Coast</text>
+          <text x="440" y="168" font-family="Work Sans, sans-serif" font-size="11.5" fill="#4B564A">住一晚 · Twin Waters</text>
+
+          <circle cx="515" cy="70" r="9" fill="#F8F4E7" stroke="#3E6E8A" stroke-width="2.5"/>
+          <text x="533" y="66" font-family="Fraunces, serif" font-size="15" fill="#22321F" font-weight="600">Hell's Gate 观景台</text>
+          <text x="533" y="84" font-family="Work Sans, sans-serif" font-size="11.5" fill="#4B564A">Noosa National Park</text>
+
+          <circle cx="445" cy="55" r="9" fill="#F8F4E7" stroke="#3E6E8A" stroke-width="2.5"/>
+          <text x="310" y="40" font-family="Fraunces, serif" font-size="15" fill="#22321F" font-weight="600">Noosa Chocolate Factory</text>
+          <text x="352" y="58" font-family="Work Sans, sans-serif" font-size="11.5" fill="#4B564A">Noosaville</text>
+
+          <g transform="translate(700,400)" filter="url(#sketchy)">
+            <circle cx="0" cy="0" r="26" fill="none" stroke="#8A8265" stroke-width="1.5"/>
+            <path d="M0 -18 L5 0 L0 18 L-5 0 Z" fill="#8A8265"/>
+            <text x="0" y="-32" text-anchor="middle" font-family="Fraunces, serif" font-size="12" fill="#8A8265">N</text>
+          </g>
+        </svg>
+        <div class="map-legend">
+          <span><span class="legend-swatch" style="background:#B23A2E;"></span>Day 1 路线</span>
+          <span><span class="legend-swatch" style="background:#3E6E8A;"></span>Day 2 路线</span>
+          <span>🛏 深色实心点 = 当晚住宿</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DAY 1 ============ -->
+  <section class="day-section day1" id="day-1">
+    <div class="wrap">
+
+      <div class="day-header">
+        <div class="day-header-text">
+          <span class="day-tag">Day 1 · 9月21日 周一</span>
+          <h2>市区 → Australian Zoo → 入住酒店</h2>
+          <p>上午从市区出发，一整天在动物园游览，傍晚抵达 Twin Waters 的海边酒店。</p>
+        </div>
+        <button class="btn btn-primary" onclick="openMultiStopNav(1)">
+          <svg viewBox="0 0 24 24" stroke-width="2"><path d="M12 2 L12 22 M2 12 L22 12"/><circle cx="12" cy="12" r="9"/></svg>
+          一键导航 Day 1 全程
+        </button>
+      </div>
+
+      <div class="timeline">
+
+        <!-- simple: start -->
+        <div class="stop">
+          <div class="stop-marker">
+            <svg viewBox="0 0 24 24" stroke-width="2"><path d="M12 21s-7-6.5-7-12a7 7 0 0 1 14 0c0 5.5-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          </div>
+          <div class="stop-simple">
+            <span class="stop-tag">出发点</span>
+            <h3>128 Charlotte St</h3>
+            <span class="stop-addr">Brisbane City QLD 4000</span>
+          </div>
+        </div>
+
+        <div class="segment">
+          <svg viewBox="0 0 24 24" stroke-width="2"><path d="M3 12h18M14 6l6 6-6 6"/></svg>
+          驾车约 <b>1 小时 10 分钟</b> · 约 85 公里，沿 Bruce Highway 北上
+        </div>
+
+        <!-- collapsible: zoo -->
+        <div class="stop">
+          <div class="stop-marker">
+            <svg viewBox="0 0 24 24" stroke-width="2"><path d="M4 20c2-6 4-9 8-9s6 3 8 9"/><circle cx="9" cy="8" r="2"/><circle cx="15" cy="8" r="2"/></svg>
+          </div>
+          <details class="stop-card">
+            <summary>
+              <div class="stop-card-head-text">
+                <span class="stop-tag">游览</span>
+                <h3>Australian Zoo</h3>
+                <span class="stop-addr">1638 Steve Irwin Way, Beerwah QLD 4519</span>
+              </div>
+              <svg class="chev" viewBox="0 0 24 24" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </summary>
+            <div class="stop-card-body">
+              <p class="stop-desc">Irwin 家族创立的动物园，近距离接触考拉、老虎、大象与鳄鱼，建议安排一整天游览，按 Show Time 规划路线。</p>
+              <div class="stop-meta">
+                <div><strong>开放时间</strong>9:00am–5:00pm</div>
+                <div><strong>建议停留</strong>全天</div>
+              </div>
+              <div class="show-times">
+                <div class="show-times-label">当日 Conservation Show 时间表</div>
+                <div class="show-list">
+                  <div class="show-row"><span>Grace's Bird Garden Feed Out</span><span class="show-time">9:30am</span></div>
+                  <div class="show-row"><span>Tortoises LIVE!</span><span class="show-time">10:00am</span></div>
+                  <div class="show-row"><span>Tigers LIVE!</span><span class="show-time">11:00am</span></div>
+                  <div class="show-row"><span>Africa Keeper Talk</span><span class="show-time">11:30am</span></div>
+                  <div class="show-row"><span>Reptiles LIVE</span><span class="show-time">11:30am</span></div>
+                  <div class="show-row"><span>Elephants LIVE!</span><span class="show-time">12:00pm</span></div>
+                  <div class="show-row featured"><span>Wildlife Warriors Show</span><span class="show-time">1:15pm</span></div>
+                  <div class="show-row"><span>Birds Of Prey LIVE!</span><span class="show-time">3:00pm</span></div>
+                  <div class="show-row"><span>Echidna Feed</span><span class="show-time">3:00pm</span></div>
+                  <div class="show-row"><span>Otters LIVE!</span><span class="show-time">3:30pm</span></div>
+                </div>
+                <p class="show-note">注：Wildlife Warriors Show 全场约40分钟，鳄鱼环节在最后20分钟才开始，前段是其他动物互动环节。</p>
+              </div>
+              <a class="official-link" href="https://australiazoo.com.au/experiences-australia-zoo/conservation-shows/" target="_blank" rel="noopener">查看官方最新 Show Time →</a>
+            </div>
+          </details>
+        </div>
+
+        <div class="segment">
+          <svg viewBox="0 0 24 24" stroke-width="2"><path d="M3 12h18M14 6l6 6-6 6"/></svg>
+          驾车约 <b>30 分钟</b> · 约 30 公里，向东驶向海岸线
+        </div>
+
+        <!-- simple: hotel -->
+        <div class="stop">
+          <div class="stop-marker">
+            <svg viewBox="0 0 24 24" stroke-width="2"><path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-6h6v6"/></svg>
+          </div>
+          <div class="stop-simple">
+            <span class="stop-tag">入住</span>
+            <h3>Novotel Sunshine Coast Resort</h3>
+            <span class="stop-addr">Ocean Dr, Twin Waters QLD 4564</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DAY 2 ============ -->
+  <section class="day-section day2" id="day-2">
+    <div class="wrap">
+
+      <div class="day-header">
+        <div class="day-header-text">
+          <span class="day-tag">Day 2 · 9月22日 周二</span>
+          <h2>酒店 → Noosa → 返回市区</h2>
+          <p>走一段国家公园海岸步道，尝手工巧克力，傍晚沿高速返回布里斯班。</p>
+        </div>
+        <button class="btn btn-primary" onclick="openMultiStopNav(2)">
+          <svg viewBox="0 0 24 24" stroke-width="2"><path d="M12 2 L12 22 M2 12 L22 12"/><circle cx="12" cy="12" r="9"/></svg>
+          一键导航 Day 2 全程
+        </button>
+      </div>
+
+      <div class="timeline">
+
+        <!-- simple: hotel (day start) -->
+        <div class="stop">
+          <div class="stop-marker">
+            <svg viewBox="0 0 24 24" stroke-width="2"><path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-6h6v6"/></svg>
+          </div>
+          <div class="stop-simple">
+            <span class="stop-tag">出发</span>
+            <h3>Novotel Sunshine Coast Resort</h3>
+            <span class="stop-addr">Ocean Dr, Twin Waters QLD 4564</span>
+          </div>
+        </div>
+
+        <div class="segment">
+          <svg viewBox="0 0 24 24" stroke-width="2"><path d="M3 12h18M14 6l6 6-6 6"/></svg>
+          驾车约 <b>25 分钟</b> · 约 20 公里，前往 Noosa Heads
+        </div>
+
+        <!-- collapsible: hell's gate lookout -->
+        <div class="stop">
+          <div class="stop-marker">
+            <svg viewBox="0 0 24 24" stroke-width="2"><path d="M12 2 L4 14 h5 l-3 8 h12 l-3-8 h5 Z"/></svg>
+          </div>
+          <details class="stop-card">
+            <summary>
+              <div class="stop-card-head-text">
+                <span class="stop-tag">徒步</span>
+                <h3>Hell's Gate 观景台</h3>
+                <span class="stop-addr">Noosa National Park, Noosa Heads QLD 4567</span>
+              </div>
+              <svg class="chev" viewBox="0 0 24 24" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </summary>
+            <div class="stop-card-body">
+              <p class="stop-desc">沿海岸步道一路走到 Hell's Gate 观景台，俯瞰礁石与碧海，路上留意树梢上的野生考拉。</p>
+              <div class="stop-meta">
+                <div><strong>推荐路线</strong>Coastal Track → Hell's Gate</div>
+                <div><strong>建议时长</strong>2–3 小时</div>
+              </div>
+            </div>
+          </details>
+        </div>
+
+        <div class="segment">
+          <svg viewBox="0 0 24 24" stroke-width="2"><path d="M3 12h18M14 6l6 6-6 6"/></svg>
+          驾车约 <b>10 分钟</b> · 约 6 公里，转往 Noosaville
+        </div>
+
+        <!-- collapsible: chocolate factory -->
+        <div class="stop">
+          <div class="stop-marker">
+            <svg viewBox="0 0 24 24" stroke-width="2"><rect x="4" y="8" width="16" height="12" rx="1.5"/><path d="M8 8V6a4 4 0 0 1 8 0v2"/></svg>
+          </div>
+          <details class="stop-card">
+            <summary>
+              <div class="stop-card-head-text">
+                <span class="stop-tag">品味</span>
+                <h3>Noosa Chocolate Factory</h3>
+                <span class="stop-addr">21 Venture Drive, Noosaville QLD 4566</span>
+              </div>
+              <svg class="chev" viewBox="0 0 24 24" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </summary>
+            <div class="stop-card-body">
+              <p class="stop-desc">工厂直营门店与咖啡馆，透过观景窗能看到巧克力现场制作，招牌 Rocky Road 和热巧克力值得一试。</p>
+              <div class="stop-meta">
+                <div><strong>营业时间</strong>8:00am–5:00pm</div>
+                <div><strong>类型</strong>工厂店 + 咖啡馆</div>
+              </div>
+            </div>
+          </details>
+        </div>
+
+        <div class="segment">
+          <svg viewBox="0 0 24 24" stroke-width="2"><path d="M3 12h18M14 6l6 6-6 6"/></svg>
+          驾车约 <b>1 小时 50 分钟</b> · 约 140 公里，沿 Bruce Highway 南下返回市区
+        </div>
+
+        <!-- simple: return -->
+        <div class="stop">
+          <div class="stop-marker">
+            <svg viewBox="0 0 24 24" stroke-width="2"><path d="M12 21s-7-6.5-7-12a7 7 0 0 1 14 0c0 5.5-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          </div>
+          <div class="stop-simple">
+            <span class="stop-tag">返回</span>
+            <h3>128 Charlotte St</h3>
+            <span class="stop-addr">Brisbane City QLD 4000</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // multi-stop navigation per day
+    var dayRoutes = {
+      1: {
+        origin: '128 Charlotte St, Brisbane City QLD 4000',
+        waypoints: ['Australian Zoo, 1638 Steve Irwin Way, Beerwah QLD 4519'],
+        destination: 'Novotel Sunshine Coast Resort, Ocean Dr, Twin Waters QLD 4564'
+      },
+      2: {
+        origin: 'Novotel Sunshine Coast Resort, Ocean Dr, Twin Waters QLD 4564',
+        waypoints: [
+          'Noosa National Park, Noosa Heads QLD 4567',
+          'Noosa Chocolate Factory, 21 Venture Drive, Noosaville QLD 4566'
+        ],
+        destination: '128 Charlotte St, Brisbane City QLD 4000'
+      }
+    };
+
+    function openMultiStopNav(day){
+      var route = dayRoutes[day];
+      var url = 'https://www.google.com/maps/dir/?api=1'
+        + '&origin=' + encodeURIComponent(route.origin)
+        + '&destination=' + encodeURIComponent(route.destination)
+        + '&waypoints=' + encodeURIComponent(route.waypoints.join('|'))
+        + '&travelmode=driving';
+      window.open(url, '_blank');
+    }
+
+    // sticky nav: click to scroll
+    function scrollToDay(day){
+      var el = document.getElementById('day-' + day);
+      if(el){ el.scrollIntoView({behavior:'smooth'}); }
+    }
+
+    // sticky nav: scroll-spy to highlight active day
+    var navButtons = document.querySelectorAll('.day-nav-btn');
+    var daySections = [document.getElementById('day-1'), document.getElementById('day-2')];
+
+    var observer = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          var id = entry.target.id;
+          var day = id.split('-')[1];
+          navButtons.forEach(function(btn){
+            btn.classList.toggle('active', btn.getAttribute('data-day') === day);
+          });
+        }
+      });
+    }, { rootMargin: '-30% 0px -60% 0px', threshold: 0 });
+
+    daySections.forEach(function(sec){ if(sec) observer.observe(sec); });
+  </script>
+
+</body>
+</html>
